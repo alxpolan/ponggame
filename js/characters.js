@@ -1,8 +1,8 @@
 const Characters = (() => {
   const LIST = [
-    { id: 'udo', name: 'Udo', front: 'assets/characters/c1-front.png', left: 'assets/characters/c1-left.png', right: null },
+    { id: 'udo', name: 'Udo', front: 'assets/characters/c1-front.png', left: 'assets/characters/c1-left.png', right: 'assets/characters/c1-right.png' },
     { id: 'kate', name: 'Kate', front: 'assets/characters/c2-front.png', left: 'assets/characters/c2-left.png', right: 'assets/characters/c2-right.png' },
-    { id: 'kacper', name: 'Kacper', front: 'assets/characters/c3-front.png', left: 'assets/characters/c3-left.png', right: null },
+    { id: 'kacper', name: 'Kacper', front: 'assets/characters/c3-front.png', left: 'assets/characters/c3-left.png', right: 'assets/characters/c3-right.png' },
     { id: 'alex', name: 'Alex', front: 'assets/characters/c4-front.png', left: 'assets/characters/c4-left.png', right: 'assets/characters/c4-right.png' }
   ];
 

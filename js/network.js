@@ -25,6 +25,7 @@ const Network = (() => {
       conn = c;
       wireConnection();
     });
+
     peer.on('error', (err) => cb.onError && cb.onError(err));
     peer.on('disconnected', () => cb.onError && cb.onError(new Error('Verbindung zum Signalisierungsserver verloren')));
   }
@@ -50,15 +51,15 @@ const Network = (() => {
 
   function send(obj) {
     if (conn && conn.open) {
-      try { conn.send(obj); } catch (e) {}
+      try { conn.send(obj); } catch (e) { }
     }
   }
 
   function isHost() { return hostRole; }
 
   function destroy() {
-    if (conn) { try { conn.close(); } catch (e) {} }
-    if (peer) { try { peer.destroy(); } catch (e) {} }
+    if (conn) { try { conn.close(); } catch (e) { } }
+    if (peer) { try { peer.destroy(); } catch (e) { } }
     conn = null;
     peer = null;
   }

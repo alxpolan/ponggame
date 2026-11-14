@@ -1,6 +1,3 @@
-// Thin wrapper around PeerJS for a single 1:1 WebRTC data connection.
-// The host picks a short room code and becomes reachable as "pong-<code>";
-// the guest connects directly to that peer id. No game server involved.
 const Network = (() => {
   const ROOM_PREFIX = 'pong-';
   const CODE_CHARS = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
@@ -24,7 +21,7 @@ const Network = (() => {
     peer = new Peer(ROOM_PREFIX + code);
     peer.on('open', () => cb.onRoomCreated && cb.onRoomCreated(code));
     peer.on('connection', (c) => {
-      if (conn) { c.close(); return; } // only one opponent
+      if (conn) { c.close(); return; }
       conn = c;
       wireConnection();
     });
@@ -53,7 +50,7 @@ const Network = (() => {
 
   function send(obj) {
     if (conn && conn.open) {
-      try { conn.send(obj); } catch (e) { /* connection may have just dropped */ }
+      try { conn.send(obj); } catch (e) {}
     }
   }
 

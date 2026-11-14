@@ -1,18 +1,11 @@
-// Pong simulation + rendering. The host runs step()/physics as the single
-// source of truth and broadcasts the resulting state; the guest only
-// renders whatever state it receives (plus its own locally-tracked paddle
-// for zero-latency feedback).
 const Game = (() => {
   const WIDTH = 960, HEIGHT = 540;
   const PADDLE_W = 14, PADDLE_H = 190, BALL_R = 8;
-  const CHAR_DISPLAY_H = PADDLE_H; // character sprite height == hitbox height
-  // Large enough that the ~142px-wide character sprite (190px tall at the
-  // image's 450:600 aspect ratio) fits fully on-screen instead of being
-  // clipped by the canvas edge.
+  const CHAR_DISPLAY_H = PADDLE_H;
   const WALL_INSET = 150;
   const WIN_SCORE = 7;
-  const LEFT_EDGE = WALL_INSET + PADDLE_W;   // right face of left paddle
-  const RIGHT_EDGE = WIDTH - WALL_INSET - PADDLE_W; // left face of right paddle
+  const LEFT_EDGE = WALL_INSET + PADDLE_W;
+  const RIGHT_EDGE = WIDTH - WALL_INSET - PADDLE_W;
 
   let ctx = null;
   let state = null;
@@ -60,7 +53,7 @@ const Game = (() => {
   function bounce(ball, paddleY, dir) {
     const rel = clamp((ball.y - paddleY) / (PADDLE_H / 2), -1, 1);
     const speed = Math.min(Math.hypot(ball.vx, ball.vy) * 1.07, 900);
-    const angle = rel * (Math.PI / 3); // max 60 degrees
+    const angle = rel * (Math.PI / 3);
     ball.vx = dir * Math.cos(angle) * speed;
     ball.vy = Math.sin(angle) * speed;
   }
@@ -80,7 +73,6 @@ const Game = (() => {
     };
   }
 
-  // Host-only authoritative physics tick.
   function step(dt) {
     if (!state.running) return;
     const b = state.ball;
@@ -121,15 +113,29 @@ const Game = (() => {
     }
 
     const displayW = CHAR_DISPLAY_H * (img.naturalWidth / img.naturalHeight);
+    const facing = Characters.getFacing(charId);
+    const needsFlip = (side === 'left' && facing === 'left') || (side === 'right' && facing === 'right');
 
     if (side === 'left') {
-      ctx.drawImage(img, LEFT_EDGE - displayW, y - CHAR_DISPLAY_H / 2, displayW, CHAR_DISPLAY_H);
+      if (needsFlip) {
+        ctx.save();
+        ctx.translate(LEFT_EDGE, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(img, 0, y - CHAR_DISPLAY_H / 2, displayW, CHAR_DISPLAY_H);
+        ctx.restore();
+      } else {
+        ctx.drawImage(img, LEFT_EDGE - displayW, y - CHAR_DISPLAY_H / 2, displayW, CHAR_DISPLAY_H);
+      }
     } else {
-      ctx.save();
-      ctx.translate(RIGHT_EDGE + displayW, 0);
-      ctx.scale(-1, 1);
-      ctx.drawImage(img, 0, y - CHAR_DISPLAY_H / 2, displayW, CHAR_DISPLAY_H);
-      ctx.restore();
+      if (needsFlip) {
+        ctx.save();
+        ctx.translate(RIGHT_EDGE + displayW, 0);
+        ctx.scale(-1, 1);
+        ctx.drawImage(img, 0, y - CHAR_DISPLAY_H / 2, displayW, CHAR_DISPLAY_H);
+        ctx.restore();
+      } else {
+        ctx.drawImage(img, RIGHT_EDGE, y - CHAR_DISPLAY_H / 2, displayW, CHAR_DISPLAY_H);
+      }
     }
   }
 

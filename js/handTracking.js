@@ -1,5 +1,3 @@
-// Wraps MediaPipe Hands: tracks one hand and exposes a smoothed vertical
-// position (0 = top of frame, 1 = bottom) that the game maps to a paddle.
 const HandTracking = (() => {
   const SMOOTHING = 0.25;
   const LOST_TIMEOUT_MS = 800;
@@ -35,7 +33,7 @@ const HandTracking = (() => {
     camera = new Camera(videoEl, {
       onFrame: async () => {
         try { await hands.send({ image: videoEl }); }
-        catch (e) { /* ignore transient frame errors */ }
+        catch (e) {}
       },
       width: 320,
       height: 240
@@ -49,7 +47,7 @@ const HandTracking = (() => {
 
     if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
       const lm = results.multiHandLandmarks[0];
-      const palmY = (lm[0].y + lm[9].y) / 2; // wrist + middle-finger MCP
+      const palmY = (lm[0].y + lm[9].y) / 2;
       smoothedY = smoothedY + (palmY - smoothedY) * SMOOTHING;
       detected = true;
       lastSeenAt = performance.now();

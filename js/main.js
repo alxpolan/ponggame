@@ -49,7 +49,7 @@
     webcamVideo: $('webcam-video')
   };
 
-  let localSide = null;   // 'left' (host) or 'right' (guest)
+  let localSide = null;
   let remoteSide = null;
   let localReady = false;
   let remoteReady = false;
@@ -74,7 +74,6 @@
     el.inputCode.value = '';
   }
 
-  // ---------- MENU ----------
   el.btnHost.addEventListener('click', () => {
     resetMenuState();
     el.lobbyTitle.textContent = 'Warte auf Gegner…';
@@ -136,7 +135,6 @@
     showScreen('menu');
   }
 
-  // ---------- CHARACTER SELECT ----------
   function startCharacterSelect() {
     localSide = Network.isHost() ? 'left' : 'right';
     remoteSide = localSide === 'left' ? 'right' : 'left';
@@ -180,7 +178,6 @@
     }
   }
 
-  // ---------- CALIBRATION ----------
   function startCalibration() {
     localReady = false;
     remoteReady = false;
@@ -236,7 +233,6 @@
     }
   }
 
-  // ---------- GAME ----------
   function beginMatch() {
     el.hudSideLabel.textContent = localSide === 'left' ? 'links (cyan)' : 'rechts (pink)';
     Game.init(el.gameCanvas);
@@ -362,7 +358,6 @@
     }
   }
 
-  // ---------- Central data handler (routes every incoming peer message) ----------
   function routeData(data) {
     if (!data || !data.type) return;
     switch (data.type) {

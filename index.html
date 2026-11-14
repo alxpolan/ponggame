@@ -10,7 +10,6 @@
 
 <div id="app">
 
-  <!-- MENU -->
   <section id="screen-menu" class="screen active">
     <h1>HAND <span class="accent">PONG</span></h1>
     <p class="subtitle">Steuere dein Paddle mit der Hand vor deiner Webcam. Spiel online gegen einen Freund.</p>
@@ -31,7 +30,6 @@
     <p id="menu-error" class="error-text"></p>
   </section>
 
-  <!-- LOBBY (waiting for connection) -->
   <section id="screen-lobby" class="screen">
     <h2 id="lobby-title">Warte auf Gegner…</h2>
     <div id="room-code-box" class="room-code-box hidden">
@@ -43,19 +41,26 @@
     <button id="btn-cancel-lobby" class="btn">Abbrechen</button>
   </section>
 
-  <!-- CHARACTER SELECT -->
   <section id="screen-character" class="screen">
     <h2>Wähl deinen Spieler</h2>
     <p class="subtitle">Diese Figur wird dein Paddle im Spiel.</p>
 
     <div class="char-grid">
       <button class="char-card" data-char="udo">
-        <img src="assets/characters/c3.png" alt="Udo" />
+        <img src="assets/characters/c1-front.png" alt="Udo" />
         <span>Udo</span>
       </button>
       <button class="char-card" data-char="kate">
-        <img src="assets/characters/c4.png" alt="Kate" />
+        <img src="assets/characters/c2-front.png" alt="Kate" />
         <span>Kate</span>
+      </button>
+      <button class="char-card" data-char="kacper">
+        <img src="assets/characters/c3-front.png" alt="Kacper" />
+        <span>Kacper</span>
+      </button>
+      <button class="char-card" data-char="alex">
+        <img src="assets/characters/c4-front.png" alt="Alex" />
+        <span>Alex</span>
       </button>
     </div>
 
@@ -65,7 +70,6 @@
     <p id="char-waiting" class="hint hidden">Warte auf Gegner…</p>
   </section>
 
-  <!-- CALIBRATE (camera + hand tracking setup) -->
   <section id="screen-calibrate" class="screen">
     <h2>Kamera-Kalibrierung</h2>
     <p>Halte deine Hand gut sichtbar vor die Kamera. Beweg sie nach oben und unten.</p>
@@ -83,7 +87,6 @@
     <p id="calibrate-waiting" class="hint hidden">Warte auf Gegner…</p>
   </section>
 
-  <!-- GAME -->
   <section id="screen-game" class="screen">
     <div class="game-wrap">
       <canvas id="game-canvas"></canvas>
@@ -96,7 +99,6 @@
     </div>
   </section>
 
-  <!-- GAME OVER -->
   <section id="screen-gameover" class="screen">
     <h2 id="gameover-title">Spiel vorbei</h2>
     <p id="gameover-text"></p>
@@ -110,11 +112,9 @@
 
 <video id="webcam-video" autoplay playsinline muted class="hidden-video"></video>
 
-<!-- MediaPipe Hands -->
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils/drawing_utils.js" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js" crossorigin="anonymous"></script>
-<!-- PeerJS (WebRTC) -->
 <script src="https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js"></script>
 
 <script src="js/handTracking.js"></script>

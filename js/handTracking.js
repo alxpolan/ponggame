@@ -33,7 +33,7 @@ const HandTracking = (() => {
     camera = new Camera(videoEl, {
       onFrame: async () => {
         try { await hands.send({ image: videoEl }); }
-        catch (e) {}
+        catch (e) { }
       },
       width: 320,
       height: 240
@@ -98,7 +98,7 @@ const HandTracking = (() => {
   }
 
   function stop() {
-    if (camera) { try { camera.stop(); } catch (e) {} }
+    if (camera) { try { camera.stop(); } catch (e) { } }
     window.removeEventListener('keydown', onKey);
   }
 

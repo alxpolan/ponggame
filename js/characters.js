@@ -1,31 +1,39 @@
 const Characters = (() => {
   const LIST = [
-    { id: 'udo', name: 'Udo', front: 'assets/characters/c1-front.png', side: 'assets/characters/c1-left.png', facing: 'left' },
-    { id: 'kate', name: 'Kate', front: 'assets/characters/c2-front.png', side: 'assets/characters/c2-right.png', facing: 'right' },
-    { id: 'kacper', name: 'Kacper', front: 'assets/characters/c3-front.png', side: 'assets/characters/c3-left.png', facing: 'left' },
-    { id: 'alex', name: 'Alex', front: 'assets/characters/c4-front.png', side: 'assets/characters/c4-left.png', facing: 'left' }
+    { id: 'udo', name: 'Udo', front: 'assets/characters/c1-front.png', left: 'assets/characters/c1-left.png', right: null },
+    { id: 'kate', name: 'Kate', front: 'assets/characters/c2-front.png', left: 'assets/characters/c2-left.png', right: 'assets/characters/c2-right.png' },
+    { id: 'kacper', name: 'Kacper', front: 'assets/characters/c3-front.png', left: 'assets/characters/c3-left.png', right: null },
+    { id: 'alex', name: 'Alex', front: 'assets/characters/c4-front.png', left: 'assets/characters/c4-left.png', right: 'assets/characters/c4-right.png' }
   ];
 
-  const sideImages = {};
+  const images = {};
 
   function preloadAll() {
     LIST.forEach((c) => {
-      const img = new Image();
-      img.src = c.side;
-      sideImages[c.id] = img;
+      images[c.id] = {
+        left: c.left ? loadImage(c.left) : null,
+        right: c.right ? loadImage(c.right) : null
+      };
     });
   }
 
-  function getSideImage(id) {
-    return sideImages[id];
+  function loadImage(src) {
+    const img = new Image();
+    img.src = src;
+    return img;
   }
 
-  function getFacing(id) {
-    const c = LIST.find((item) => item.id === id);
-    return c ? c.facing : 'right';
+  function getSprite(id, side) {
+    const entry = images[id];
+    if (!entry) return null;
+    const direct = entry[side];
+    if (direct) return { img: direct, flip: false };
+    const other = side === 'left' ? 'right' : 'left';
+    const fallback = entry[other];
+    return fallback ? { img: fallback, flip: true } : null;
   }
 
   function list() { return LIST; }
 
-  return { list, preloadAll, getSideImage, getFacing };
+  return { list, preloadAll, getSprite };
 })();

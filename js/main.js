@@ -112,7 +112,7 @@
   });
 
   el.btnCopyCode.addEventListener('click', () => {
-    navigator.clipboard?.writeText(el.roomCodeValue.textContent).catch(() => {});
+    navigator.clipboard?.writeText(el.roomCodeValue.textContent).catch(() => { });
   });
 
   el.btnCancelLobby.addEventListener('click', () => {

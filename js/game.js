@@ -103,7 +103,8 @@ const Game = (() => {
   function applyRemoteState(s) { state = s; }
 
   function drawPaddle(side, y, charId) {
-    const img = charId ? Characters.getSideImage(charId) : null;
+    const sprite = charId ? Characters.getSprite(charId, side) : null;
+    const img = sprite ? sprite.img : null;
 
     if (!img || !img.complete || img.naturalWidth === 0) {
       ctx.fillStyle = side === 'left' ? '#5ee6ff' : '#ff5ea8';
@@ -113,11 +114,9 @@ const Game = (() => {
     }
 
     const displayW = CHAR_DISPLAY_H * (img.naturalWidth / img.naturalHeight);
-    const facing = Characters.getFacing(charId);
-    const needsFlip = (side === 'left' && facing === 'left') || (side === 'right' && facing === 'right');
 
     if (side === 'left') {
-      if (needsFlip) {
+      if (sprite.flip) {
         ctx.save();
         ctx.translate(LEFT_EDGE, 0);
         ctx.scale(-1, 1);
@@ -127,7 +126,7 @@ const Game = (() => {
         ctx.drawImage(img, LEFT_EDGE - displayW, y - CHAR_DISPLAY_H / 2, displayW, CHAR_DISPLAY_H);
       }
     } else {
-      if (needsFlip) {
+      if (sprite.flip) {
         ctx.save();
         ctx.translate(RIGHT_EDGE + displayW, 0);
         ctx.scale(-1, 1);
